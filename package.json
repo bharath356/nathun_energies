@@ -1,0 +1,30 @@
+{
+  "name": "call-management-system",
+  "version": "1.0.0",
+  "description": "A comprehensive call management application with AWS serverless backend",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "deploy:backend": "./deploy-backend.sh",
+    "deploy:frontend": "./deploy-frontend.sh",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test"
+  },
+  "keywords": [
+    "call-management",
+    "aws",
+    "serverless",
+    "react",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

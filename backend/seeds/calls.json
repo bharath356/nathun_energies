@@ -1,0 +1,110 @@
+[
+  {
+    "callId": "call-001",
+    "userId": "caller-001",
+    "phoneNumber": "+1-555-0101",
+    "status": "completed",
+    "outcome": "interested",
+    "notes": "Customer showed interest in our premium package. Scheduled follow-up for next week.",
+    "duration": 180,
+    "createdAt": "2025-01-20T10:30:00.000Z",
+    "updatedAt": "2025-01-20T10:33:00.000Z",
+    "completedAt": "2025-01-20T10:33:00.000Z"
+  },
+  {
+    "callId": "call-002",
+    "userId": "caller-002",
+    "phoneNumber": "+1-555-0102",
+    "status": "completed",
+    "outcome": "not-interested",
+    "notes": "Customer not interested at this time. Already has a similar service.",
+    "duration": 45,
+    "createdAt": "2025-01-20T11:15:00.000Z",
+    "updatedAt": "2025-01-20T11:15:45.000Z",
+    "completedAt": "2025-01-20T11:15:45.000Z"
+  },
+  {
+    "callId": "call-003",
+    "userId": "caller-001",
+    "phoneNumber": "+1-555-0103",
+    "status": "completed",
+    "outcome": "callback",
+    "notes": "Customer requested callback tomorrow at 2 PM. Interested but needs to discuss with spouse.",
+    "duration": 120,
+    "createdAt": "2025-01-20T14:20:00.000Z",
+    "updatedAt": "2025-01-20T14:22:00.000Z",
+    "completedAt": "2025-01-20T14:22:00.000Z"
+  },
+  {
+    "callId": "call-004",
+    "userId": "caller-002",
+    "phoneNumber": "+1-555-0104",
+    "status": "completed",
+    "outcome": "no-answer",
+    "notes": "No answer, voicemail left. Will try again later.",
+    "duration": 0,
+    "createdAt": "2025-01-20T15:45:00.000Z",
+    "updatedAt": "2025-01-20T15:45:30.000Z",
+    "completedAt": "2025-01-20T15:45:30.000Z"
+  },
+  {
+    "callId": "call-005",
+    "userId": "caller-001",
+    "phoneNumber": "+1-555-0105",
+    "status": "pending",
+    "notes": "Scheduled call for today at 4 PM",
+    "createdAt": "2025-01-21T08:00:00.000Z",
+    "updatedAt": "2025-01-21T08:00:00.000Z"
+  },
+  {
+    "callId": "call-006",
+    "userId": "caller-002",
+    "phoneNumber": "+1-555-0106",
+    "status": "in-progress",
+    "notes": "Currently on call with customer",
+    "createdAt": "2025-01-21T16:00:00.000Z",
+    "updatedAt": "2025-01-21T16:00:00.000Z"
+  },
+  {
+    "callId": "call-007",
+    "userId": "caller-001",
+    "phoneNumber": "+1-555-0107",
+    "status": "completed",
+    "outcome": "wrong-number",
+    "notes": "Wrong number - business line, not residential.",
+    "duration": 15,
+    "createdAt": "2025-01-21T09:30:00.000Z",
+    "updatedAt": "2025-01-21T09:30:15.000Z",
+    "completedAt": "2025-01-21T09:30:15.000Z"
+  },
+  {
+    "callId": "call-008",
+    "userId": "caller-002",
+    "phoneNumber": "+1-555-0108",
+    "status": "completed",
+    "outcome": "interested",
+    "notes": "Very interested customer. Wants to start service next month. Provided quote.",
+    "duration": 300,
+    "createdAt": "2025-01-21T13:15:00.000Z",
+    "updatedAt": "2025-01-21T13:20:00.000Z",
+    "completedAt": "2025-01-21T13:20:00.000Z"
+  },
+  {
+    "callId": "call-009",
+    "userId": "caller-001",
+    "phoneNumber": "+1-555-0109",
+    "status": "failed",
+    "notes": "Call dropped due to technical issues. Will retry.",
+    "createdAt": "2025-01-21T10:45:00.000Z",
+    "updatedAt": "2025-01-21T10:47:00.000Z"
+  },
+  {
+    "callId": "call-010",
+    "userId": "caller-002",
+    "phoneNumber": "+1-555-0110",
+    "status": "pending",
+    "notes": "Follow-up call from previous inquiry",
+    "createdAt": "2025-01-21T12:00:00.000Z",
+    "updatedAt": "2025-01-21T12:00:00.000Z"
+  }
+]

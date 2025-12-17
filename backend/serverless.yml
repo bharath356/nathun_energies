@@ -1,0 +1,216 @@
+service: call-management-backend
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 1024
+  timeout: 300
+  environment:
+    STAGE: ${self:provider.stage}
+    REGION: ${self:provider.region}
+    USERS_TABLE: ${self:service}-${self:provider.stage}-users
+    PHONE_NUMBERS_TABLE: ${self:service}-${self:provider.stage}-phone-numbers
+    CALLS_TABLE: ${self:service}-${self:provider.stage}-calls
+    FOLLOWUPS_TABLE: ${self:service}-${self:provider.stage}-followups
+    # Client workflow step tables
+    CLIENT_STEP1_TABLE: ${self:service}-${self:provider.stage}-client-step1-data
+    CLIENT_STEP2_TABLE: ${self:service}-${self:provider.stage}-client-step2-data
+    CLIENT_STEP3_TABLE: ${self:service}-${self:provider.stage}-client-step3-data
+    CLIENT_STEP4_TABLE: ${self:service}-${self:provider.stage}-client-step4-data
+    CLIENT_STEP5_TABLE: ${self:service}-${self:provider.stage}-client-step5-data
+    JWT_SECRET: ${env:JWT_SECRET, 'your-jwt-secret-key'}
+    COGNITO_USER_POOL_ID: ${env:COGNITO_USER_POOL_ID, ''}
+    COGNITO_CLIENT_ID: ${env:COGNITO_CLIENT_ID, ''}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PHONE_NUMBERS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PHONE_NUMBERS_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CALLS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CALLS_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FOLLOWUPS_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.FOLLOWUPS_TABLE}/index/*"
+            # Client workflow step tables
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP1_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP1_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP2_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP2_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP3_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP3_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP4_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP4_TABLE}/index/*"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP5_TABLE}"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CLIENT_STEP5_TABLE}/index/*"
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - cognito-idp:AdminGetUser
+            - cognito-idp:ListUsers
+          Resource: "*"
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dynamodb-local
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    httpPort: 3001
+    noPrependStageInUrl: true
+    corsAllowOrigin: '*'
+    corsAllowHeaders: 'accept,content-type,x-api-key,authorization'
+    environment:
+      IS_OFFLINE: true
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+      AWS_REGION: us-east-1
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: false
+      seed: false
+      noStart: false
+      host: localhost
+      cors: true
+      sharedDb: true
+    seed:
+      domain:
+        sources:
+          - table: ${self:provider.environment.USERS_TABLE}
+            sources: [./seeds/users.json]
+          - table: ${self:provider.environment.PHONE_NUMBERS_TABLE}
+            sources: [./seeds/phone-numbers.json]
+    stages:
+      - dev
+      - local
+    installationDir: ./.dynamodb
+    downloadUrl: https://d1ni2b6xgvw0s0.cloudfront.net/v2.x/dynamodb_local_latest.tar.gz
+
+functions:
+  # Single Express.js API handler
+  api:
+    handler: src/lambda.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
+          cors: true
+    url: true
+
+resources:
+  Resources:
+    # Users table
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.USERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: email-index
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
+    # Phone Numbers table
+    PhoneNumbersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.PHONE_NUMBERS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: phoneNumber
+            AttributeType: S
+          - AttributeName: assignedTo
+            AttributeType: S
+        KeySchema:
+          - AttributeName: phoneNumber
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: assignedTo-index
+            KeySchema:
+              - AttributeName: assignedTo
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
+    # Calls table
+    CallsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.CALLS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: callId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: callId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: userId-createdAt-index
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+
+    # Follow-ups table
+    FollowUpsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.FOLLOWUPS_TABLE}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: followUpId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: scheduledDate
+            AttributeType: S
+        KeySchema:
+          - AttributeName: followUpId
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: userId-scheduledDate-index
+            KeySchema:
+              - AttributeName: userId
+                KeyType: HASH
+              - AttributeName: scheduledDate
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL

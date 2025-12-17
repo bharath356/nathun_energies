@@ -1,0 +1,268 @@
+# ===================================
+# ROOT LEVEL GITIGNORE
+# Call Management System
+# ===================================
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# AWS Credentials & Configuration
+.aws/
+aws-exports.js
+awsconfiguration.json
+
+# SSL Certificates & Keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ===================================
+# DEPENDENCIES & PACKAGE MANAGERS
+# ===================================
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Package manager files
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# ===================================
+# BUILD & DEPLOYMENT ARTIFACTS
+# ===================================
+
+# Build directories
+build/
+dist/
+out/
+.next/
+.nuxt/
+.vuepress/dist
+
+# Deployment packages
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Serverless Framework
+.serverless/
+.serverless_nextjs/
+
+# AWS SAM
+.aws-sam/
+
+# Amplify
+amplify/backend/amplify-meta.json
+amplify/backend/.temp/
+amplify/backend/awscloudformation/
+amplify/#current-cloud-backend/
+amplify/.config/
+
+# Lambda layers
+layers/
+*.layer
+
+# ===================================
+# TESTING & COVERAGE
+# ===================================
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Test results
+test-results/
+junit.xml
+
+# ===================================
+# DEVELOPMENT TOOLS & IDEs
+# ===================================
+
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ===================================
+# OPERATING SYSTEM FILES
+# ===================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===================================
+# LOGS & TEMPORARY FILES
+# ===================================
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary directories
+tmp/
+temp/
+.tmp/
+.temp/
+
+# ===================================
+# DATABASE & LOCAL DEVELOPMENT
+# ===================================
+
+# DynamoDB Local
+.dynamodb/
+dynamodb-local/
+DynamoDBLocal*
+shared-local-instance.db
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# ===================================
+# MISCELLANEOUS
+# ===================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files (unless specifically needed)
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Specific deployment artifacts
+frontend-amplify-deployment.zip
+
+# Editor directories and files
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.test
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*

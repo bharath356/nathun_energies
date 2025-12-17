@@ -1,0 +1,104 @@
+# DynamoDB Tables - Only created for production deployments, not for local development
+Resources:
+  # Users table
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Condition: IsNotLocal
+    Properties:
+      TableName: ${self:provider.environment.USERS_TABLE}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  # Phone Numbers table
+  PhoneNumbersTable:
+    Type: AWS::DynamoDB::Table
+    Condition: IsNotLocal
+    Properties:
+      TableName: ${self:provider.environment.PHONE_NUMBERS_TABLE}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: phoneNumber
+          AttributeType: S
+        - AttributeName: assignedTo
+          AttributeType: S
+      KeySchema:
+        - AttributeName: phoneNumber
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: assignedTo-index
+          KeySchema:
+            - AttributeName: assignedTo
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  # Calls table
+  CallsTable:
+    Type: AWS::DynamoDB::Table
+    Condition: IsNotLocal
+    Properties:
+      TableName: ${self:provider.environment.CALLS_TABLE}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: callId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: callId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: userId-createdAt-index
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+  # Follow-ups table
+  FollowUpsTable:
+    Type: AWS::DynamoDB::Table
+    Condition: IsNotLocal
+    Properties:
+      TableName: ${self:provider.environment.FOLLOWUPS_TABLE}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: followUpId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: scheduledDate
+          AttributeType: S
+      KeySchema:
+        - AttributeName: followUpId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: userId-scheduledDate-index
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: scheduledDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+Conditions:
+  IsNotLocal: !Not [!Equals [${self:provider.stage}, local]]

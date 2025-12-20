@@ -70,43 +70,72 @@ The application follows a serverless architecture pattern:
 - npm (comes with Node.js)
 - Java (version 8 or later) - for DynamoDB Local
 
-### Setup and Development
+### Cross-Platform Setup (Windows, Linux, macOS)
+
+**🎉 New: Unified cross-platform commands that work on all operating systems!**
+
 1. **Clone and setup**:
    ```bash
    git clone <repository-url>
    cd call-management-system
-   chmod +x *.sh
-   ./setup-new-environment.sh
+   npm run setup
    ```
 
 2. **Start development environment**:
    ```bash
-   ./start-local-dev.sh
+   npm run start:local
    ```
 
 3. **Access the application**:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:3001
+   - DynamoDB Local: http://localhost:8000
    - Demo credentials: admin@example.com / password
+
+### Alternative Commands
+
+**Individual services**:
+```bash
+npm run dynamodb:start     # Start DynamoDB Local only
+npm run backend:dev        # Start backend only
+npm run frontend:dev       # Start frontend only
+```
+
+**Database setup**:
+```bash
+npm run dynamodb:setup     # Install DynamoDB + create tables + seed data
+```
 
 ### Deployment
 
-**Deploy Backend to AWS Lambda**:
+**Cross-platform deployment**:
 ```bash
-npm run deploy:backend
-# or
-./deploy-backend.sh
+npm run deploy:backend     # Deploy backend to AWS
+npm run deploy:frontend    # Build frontend for deployment
+npm run deploy:all         # Deploy both backend and frontend
+npm run deploy:info        # Show deployment status
 ```
 
-**Deploy Frontend to AWS Amplify**:
+### Platform-Specific Scripts (Legacy)
+
+For users who prefer the original platform-specific scripts:
+
+**Linux/macOS**:
 ```bash
-npm run deploy:frontend
-# or
-./deploy-frontend.sh
+chmod +x *.sh
+./setup-new-environment.sh
+./start-local-dev.sh
+```
+
+**Windows**:
+```powershell
+.\setup-new-environment.ps1
+.\start-local-dev.ps1
 ```
 
 For detailed setup instructions, see [QUICK-START.md](./QUICK-START.md).
 For deployment details, see [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md).
+For cross-platform information, see [CROSS-PLATFORM-GUIDE.md](./CROSS-PLATFORM-GUIDE.md).
 
 ## Project Structure
 

@@ -6,10 +6,6 @@ const dynamodb = new AWS.DynamoDB({
   endpoint: 'http://localhost:8000',
   accessKeyId: 'dummy',
   secretAccessKey: 'dummy'
-//      region: 'us-east-2',
-//  endpoint: 'http://dynamodb.us-east-2.amazonaws.com',
-//  accessKeyId: 'AKIAUQ4L3KHOGTASWJOM',
-//  secretAccessKey: 'qh4kH0pysih8zeokpNBNC/tYRYQbdEzbVsonUZLS'
 });
 
 const clientTableDefinitions = [
